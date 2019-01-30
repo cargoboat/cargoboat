@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/dkeng/pkg/logger"
 	"github.com/gin-gonic/gin"
+	"github.com/nilorg/pkg/logger"
 	"github.com/spf13/viper"
 )
 
@@ -23,7 +23,8 @@ func initConfigFile() {
 	viper.SetConfigFile(configFile)
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatalf("读取配置文件错误：%s", err.Error())
-		os.Exit(-1)
+	} else {
+		viper.WatchConfig()
 	}
 }
 func initLog() {

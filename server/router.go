@@ -1,56 +1,31 @@
 package server
 
 import (
-	"time"
+	"net/http"
 
-	"github.com/appleboy/gin-jwt"
-	"github.com/cargoboat/cargoboat/controller/application"
-	"github.com/cargoboat/cargoboat/controller/auth"
+	"github.com/spf13/viper"
+
 	"github.com/cargoboat/cargoboat/controller/config"
-	wgin "github.com/dkeng/pkg/context/gin"
 	"github.com/gin-gonic/gin"
 )
 
-var (
-	// the jwt middleware
-	authMiddleware = &jwt.GinJWTMiddleware{
-		Realm:         "test zone",
-		Key:           []byte("secret key"),
-		Timeout:       time.Hour,
-		MaxRefresh:    time.Hour,
-		Authenticator: auth.Authenticator,
-		Authorizator:  auth.Authorizator,
-		Unauthorized:  auth.Unauthorized,
-		TokenLookup:   "header: Authorization, query: token, cookie: jwt",
-		TokenHeadName: "Bearer",
-
-		// TimeFunc provides the current time. You can override it to use another time value. This is useful for testing or if your server uses a different time zone than your tokens.
-		TimeFunc: time.Now,
+func getAccounts() gin.Accounts {
+	username := viper.GetString("basic_auth.username")
+	password := viper.GetString("basic_auth.password")
+	return gin.Accounts{
+		username: password,
 	}
-)
+}
 
 // setRouter 设置路由
 func setRouter(handler *gin.Engine) {
-	handler.GET("/", func(c *gin.Context) {
-		c.String(200, "welcome cogo server")
+	handler.GET("/", func(ctx *gin.Context) {
+		ctx.String(http.StatusOK, "welcome cargoboat server")
 	})
 
-	handler.POST("/login", authMiddleware.LoginHandler)
-	auth := handler.Group("/auth")
-	auth.Use(authMiddleware.MiddlewareFunc())
+	auth := handler.Group("/client", gin.BasicAuth(getAccounts()))
 	{
-		// auth.GET("/hello", helloHandler)
-		auth.GET("/refresh_token", authMiddleware.RefreshHandler)
-
-		auth.GET("/applications", wgin.WrapControllerFunction(application.Get))
-		auth.GET("/applications/:id", wgin.WrapControllerFunction(application.GetOne))
-		auth.GET("/applications/:id/configs", wgin.WrapControllerFunction(application.GetConfigs))
-		auth.POST("/applications", wgin.WrapControllerFunction(application.Post))
-		auth.DELETE("/applications/:id", wgin.WrapControllerFunction(application.Delete))
-
-		auth.GET("/configs", wgin.WrapControllerFunction(config.Get))
-		auth.POST("/configs", wgin.WrapControllerFunction(config.Post))
-		auth.PUT("/configs/:id", wgin.WrapControllerFunction(config.Put))
-		auth.DELETE("/configs/:id", wgin.WrapControllerFunction(config.Delete))
+		auth.GET("/version", config.GetVersion)
+		auth.GET("/configs", config.Get)
 	}
 }

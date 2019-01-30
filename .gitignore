@@ -12,4 +12,5 @@
 *.out
 
 .idea/
+cargoboat.db/*
 cargoboat-release.toml

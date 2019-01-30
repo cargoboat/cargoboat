@@ -4,8 +4,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	// 加载配置文件
-	"github.com/cargoboat/cargoboat/model"
+
 	_ "github.com/cargoboat/cargoboat/module/config"
 	// 初始化存储
 	"github.com/cargoboat/cargoboat/module/store"
@@ -14,7 +13,6 @@ import (
 
 func init() {
 	store.Start()
-	model.AutoMigrate()
 	server.Start()
 }
 func main() {

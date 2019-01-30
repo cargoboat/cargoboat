@@ -1,57 +1,87 @@
 package store
 
 import (
-	"log"
-	"os"
+	"time"
 
-	"github.com/dkeng/pkg/logger"
-	"github.com/jinzhu/gorm"
-	// mysql驱动
-	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"github.com/pkg/errors"
+	"github.com/cargoboat/storage"
+	"github.com/nilorg/pkg/logger"
+	"github.com/nilorg/sdk/convert"
 	"github.com/spf13/viper"
 )
 
-// DB 数据库连接
-var DB *gorm.DB
+var store storage.Storageer
 
 func initDB() {
-	// 初始化数据库
-	db, err := gorm.Open("mysql", viper.GetString("mysql.address"))
-	if err != nil {
-		logger.Fatalf(
-			"初始化 MySQL 连接失败: %s \n",
-			errors.Wrap(err, "打开 MySQL 连接失败"),
-		)
-		os.Exit(-1)
+	var err error
+	if viper.GetString("system.db_type") == "leveldb" {
+		store, err = storage.NewLevelDBStorage(viper.GetString("leveldb.path"))
+		if err != nil {
+			logger.Fatalln(err)
+		}
 	}
-	err = db.DB().Ping()
-	if err != nil {
-		logger.Fatalf(
-			"初始化 MySQL 连接失败: %s \n",
-			errors.Wrap(err, "Ping MySQL 失败"),
-		)
-		os.Exit(-1)
-	}
-
-	db.LogMode(viper.GetBool("mysql.log"))
-
-	db.DB().SetMaxOpenConns(viper.GetInt("mysql.max_open"))
-	db.DB().SetMaxIdleConns(viper.GetInt("mysql.max_idle"))
-	// db.DB().SetConnMaxLifetime(time.Hour)
-
-	DB = db
 }
 
 // Start 启动存储
 func Start() {
 	initDB()
+	err := SetVersion(time.Now().Unix())
+	if err != nil {
+		logger.Errorln(err)
+	}
 }
 
 // Close 关闭
 func Close() {
-	err := DB.Close()
+	err := store.Close()
 	if err != nil {
-		log.Println(err)
+		logger.Errorln(err)
 	}
+}
+
+// Get ...
+func Get(key string) (value string) {
+	value, _ = store.Get(key)
+	return
+}
+
+// GetVersion ...
+func GetVersion() (value int64) {
+	var result string
+	result, _ = store.Get("version")
+	value = convert.ToInt64(result)
+	return
+}
+
+// SetVersion ...
+func SetVersion(value int64) error {
+	return store.Set("version", convert.ToString(value))
+}
+
+// GetAllKeys ...
+func GetAllKeys() (keys []string) {
+	var err error
+	keys, err = store.GetAllKeys()
+	if err != nil {
+		keys = []string{}
+	}
+	return
+}
+
+// GetAll ...
+func GetAll() (values map[string]string) {
+	var err error
+	values, err = store.GetAll()
+	if err != nil {
+		values = make(map[string]string)
+	}
+	return
+}
+
+// Delete ...
+func Delete(key string) error {
+	err := store.Delete(key)
+	if err == nil {
+		err = SetVersion(time.Now().Unix())
+	}
+	return err
 }
