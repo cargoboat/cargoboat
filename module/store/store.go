@@ -44,17 +44,28 @@ func Get(key string) (value string) {
 	return
 }
 
+// Set ...
+func Set(key string, value string) error {
+	err := store.Set(key, value)
+	if err == nil {
+		err = SetVersion(time.Now().Unix())
+	}
+	return err
+}
+
+const cargoboatConfigVersionKey = "cargoboat.config.version"
+
 // GetVersion ...
 func GetVersion() (value int64) {
 	var result string
-	result, _ = store.Get("version")
+	result, _ = store.Get(cargoboatConfigVersionKey)
 	value = convert.ToInt64(result)
 	return
 }
 
 // SetVersion ...
 func SetVersion(value int64) error {
-	return store.Set("version", convert.ToString(value))
+	return store.Set(cargoboatConfigVersionKey, convert.ToString(value))
 }
 
 // GetAllKeys ...

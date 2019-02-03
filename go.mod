@@ -8,7 +8,7 @@ require (
 	github.com/gin-contrib/sse v0.0.0-20190125020943-a7658810eb74 // indirect
 	github.com/gin-gonic/gin v1.3.0
 	github.com/nilorg/pkg v0.0.0-20190124100809-00a626d01c23
-	github.com/nilorg/sdk v0.0.0-20190116130924-5cba00a81130
+	github.com/nilorg/sdk v0.0.0-20190130084846-76476c6b8292
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/sirupsen/logrus v1.3.0 // indirect
 	github.com/spf13/viper v1.2.1

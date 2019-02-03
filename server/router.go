@@ -3,15 +3,25 @@ package server
 import (
 	"net/http"
 
+	"github.com/cargoboat/cargoboat/controller"
+
+	"github.com/cargoboat/cargoboat/controller/client"
+
 	"github.com/spf13/viper"
 
-	"github.com/cargoboat/cargoboat/controller/config"
 	"github.com/gin-gonic/gin"
 )
 
-func getAccounts() gin.Accounts {
-	username := viper.GetString("basic_auth.username")
-	password := viper.GetString("basic_auth.password")
+func getClientAccounts() gin.Accounts {
+	username := viper.GetString("client.basic_auth.username")
+	password := viper.GetString("client.basic_auth.password")
+	return gin.Accounts{
+		username: password,
+	}
+}
+func getServerAccounts() gin.Accounts {
+	username := viper.GetString("server.basic_auth.username")
+	password := viper.GetString("server.basic_auth.password")
 	return gin.Accounts{
 		username: password,
 	}
@@ -23,9 +33,16 @@ func setRouter(handler *gin.Engine) {
 		ctx.String(http.StatusOK, "welcome cargoboat server")
 	})
 
-	auth := handler.Group("/client", gin.BasicAuth(getAccounts()))
+	serverAuth := handler.Group("/", gin.BasicAuth(getServerAccounts()))
 	{
-		auth.GET("/version", config.GetVersion)
-		auth.GET("/configs", config.Get)
+		serverAuth.POST("/set", controller.Set)
+		serverAuth.GET("/keys", controller.GetAllKeys)
+		serverAuth.GET("/all", controller.GetAll)
+	}
+
+	clientAuth := handler.Group("/client", gin.BasicAuth(getClientAccounts()))
+	{
+		clientAuth.GET("/version", client.GetVersion)
+		clientAuth.GET("/configs", client.Get)
 	}
 }

@@ -70,6 +70,8 @@ github.com/nilorg/pkg v0.0.0-20190124100809-00a626d01c23 h1:QU+1nsaQx04fJYki7Iek
 github.com/nilorg/pkg v0.0.0-20190124100809-00a626d01c23/go.mod h1:RNhEKvtANw4vtz2y0wwklD6prlmxouQPMT4yoLT+XyU=
 github.com/nilorg/sdk v0.0.0-20190116130924-5cba00a81130 h1:ZeJEoXEVjl41k4ytiQYE646mkTj3OHS0KFwUwD/msNE=
 github.com/nilorg/sdk v0.0.0-20190116130924-5cba00a81130/go.mod h1:3ucEfFqjxRb1q9t38i3arReUBkAOjASdgmRpOz4EBKA=
+github.com/nilorg/sdk v0.0.0-20190130084846-76476c6b8292 h1:XchxVZZS4ADpSiM8UBxiMlJqz171whk53qKoO64WYh0=
+github.com/nilorg/sdk v0.0.0-20190130084846-76476c6b8292/go.mod h1:3ucEfFqjxRb1q9t38i3arReUBkAOjASdgmRpOz4EBKA=
 github.com/onsi/ginkgo v1.6.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=
 github.com/onsi/ginkgo v1.7.0 h1:WSHQ+IS43OoUrWtD1/bbclrwK8TTH5hzp+umCiuxHgs=
 github.com/onsi/ginkgo v1.7.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=
