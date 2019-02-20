@@ -7,9 +7,12 @@ db_type = "leveldb"
 path = "./cargoboat.db"
 
 [client]
-[client.basic_auth]
+[[client.basic_auth]]
 username = "cargoboat-client"
 password = "cargoboat"
+[[client.basic_auth]]
+username = "cargoboat-client2"
+password = "cargoboat2"
 
 [server]
 [server.basic_auth]

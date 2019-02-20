@@ -13,11 +13,13 @@ import (
 )
 
 func getClientAccounts() gin.Accounts {
-	username := viper.GetString("client.basic_auth.username")
-	password := viper.GetString("client.basic_auth.password")
-	return gin.Accounts{
-		username: password,
+	clientBasicAuthList := viper.Get("client.basic_auth").([]interface{})
+	accounts := make(gin.Accounts)
+	for _, v := range clientBasicAuthList {
+		temp := v.(map[string]interface{})
+		accounts[temp["username"].(string)] = temp["password"].(string)
 	}
+	return accounts
 }
 func getServerAccounts() gin.Accounts {
 	username := viper.GetString("server.basic_auth.username")
