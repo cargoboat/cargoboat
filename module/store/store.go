@@ -1,6 +1,7 @@
 package store
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/cargoboat/storage"
@@ -39,14 +40,14 @@ func Close() {
 }
 
 // Get ...
-func Get(key string) (value string) {
-	value, _ = store.Get(key)
+func Get(group, key string) (value string) {
+	value, _ = store.Get(fmt.Sprintf("%s.%s", group, key))
 	return
 }
 
 // Set ...
-func Set(key string, value string) error {
-	err := store.Set(key, value)
+func Set(group, key, value string) error {
+	err := store.Set(fmt.Sprintf("%s.%s", group, key), value)
 	if err == nil {
 		err = SetVersion(time.Now().Unix())
 	}
@@ -78,6 +79,16 @@ func GetAllKeys() (keys []string) {
 	return
 }
 
+// GetAllKeysByPrefix ...
+func GetAllKeysByPrefix(prefix string) (keys []string) {
+	var err error
+	keys, err = store.GetAllKeysByPrefix(prefix)
+	if err != nil {
+		keys = []string{}
+	}
+	return
+}
+
 // GetAll ...
 func GetAll() (values map[string]string) {
 	var err error
@@ -88,9 +99,19 @@ func GetAll() (values map[string]string) {
 	return
 }
 
+// GetAllByPrefix ...
+func GetAllByPrefix(prefix string) (values map[string]string) {
+	var err error
+	values, err = store.GetAllByPrefix(prefix)
+	if err != nil {
+		values = make(map[string]string)
+	}
+	return
+}
+
 // Delete ...
-func Delete(key string) error {
-	err := store.Delete(key)
+func Delete(group, key string) error {
+	err := store.Delete(fmt.Sprintf("%s.%s", group, key))
 	if err == nil {
 		err = SetVersion(time.Now().Unix())
 	}

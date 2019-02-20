@@ -16,7 +16,14 @@ type configItem struct {
 // Get 获取
 func Get(ctx *gin.Context) {
 	items := make([]configItem, 0)
-	for key, value := range store.GetAll() {
+	groupName := ctx.MustGet(gin.AuthUserKey).(string)
+	for key, value := range store.GetAllByPrefix(groupName) {
+		items = append(items, configItem{
+			Key:   key,
+			Value: value,
+		})
+	}
+	for key, value := range store.GetAllByPrefix("env") {
 		items = append(items, configItem{
 			Key:   key,
 			Value: value,
