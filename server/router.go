@@ -37,9 +37,10 @@ func setRouter(handler *gin.Engine) {
 
 	serverAuth := handler.Group("/", gin.BasicAuth(getServerAccounts()))
 	{
-		serverAuth.POST("/set", controller.Set)
+		serverAuth.POST("/configs", controller.Set)
 		serverAuth.GET("/keys", controller.GetAllKeys)
-		serverAuth.GET("/all", controller.GetAll)
+		serverAuth.GET("/configs", controller.GetAll)
+		serverAuth.DELETE("/configs", controller.Delete)
 	}
 
 	clientAuth := handler.Group("/client", gin.BasicAuth(getClientAccounts()))

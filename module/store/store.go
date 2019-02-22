@@ -110,8 +110,8 @@ func GetAllByPrefix(prefix string) (values map[string]string) {
 }
 
 // Delete ...
-func Delete(group, key string) error {
-	err := store.Delete(fmt.Sprintf("%s.%s", group, key))
+func Delete(key string) error {
+	err := store.Delete(key)
 	if err == nil {
 		err = SetVersion(time.Now().Unix())
 	}
