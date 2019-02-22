@@ -14,3 +14,5 @@ CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -o ./releases/${NAME}-linux32 ./cmd
 echo "build linux32 succeed!"
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ./releases/${NAME}-linux64 ./cmd
 echo "build linux64 succeed!"
+CGO_ENABLED=0 GOOS=linux GOARCH=arm go build -o ./releases/${NAME}-linuxarm ./cmd
+echo "build arm succeed!"

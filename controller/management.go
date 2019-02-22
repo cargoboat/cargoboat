@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -61,4 +62,20 @@ func GetAll(ctx *gin.Context) {
 		values = store.GetAll()
 	}
 	ctx.JSON(http.StatusOK, values)
+}
+
+// Delete ...
+func Delete(ctx *gin.Context) {
+	key := ctx.Query("key")
+	key = strings.TrimSpace(key)
+	if key == "" {
+		ctx.JSON(http.StatusBadRequest, errors.New("key cannot be empty"))
+		return
+	}
+	err := store.Delete(key)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, err)
+		return
+	}
+	ctx.Status(http.StatusOK)
 }
