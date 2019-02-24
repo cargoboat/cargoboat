@@ -54,19 +54,20 @@ func Set(group, key, value string) error {
 	return err
 }
 
-const cargoboatConfigVersionKey = "cargoboat.config.version"
+// CargoboatConfigVersionKey ...
+const CargoboatConfigVersionKey = "cargoboat.config.version"
 
 // GetVersion ...
 func GetVersion() (value int64) {
 	var result string
-	result, _ = store.Get(cargoboatConfigVersionKey)
+	result, _ = store.Get(CargoboatConfigVersionKey)
 	value = convert.ToInt64(result)
 	return
 }
 
 // SetVersion ...
 func SetVersion(value int64) error {
-	return store.Set(cargoboatConfigVersionKey, convert.ToString(value))
+	return store.Set(CargoboatConfigVersionKey, convert.ToString(value))
 }
 
 // GetAllKeys ...

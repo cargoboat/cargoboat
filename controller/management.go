@@ -28,13 +28,12 @@ func Set(ctx *gin.Context) {
 	if err := ctx.Bind(&model); err != nil {
 		ctx.JSON(http.StatusBadRequest, err)
 	}
-	//if strings.ToLower(model.Group) == "env" {
-	//	ctx.JSON(http.StatusBadRequest, errors.New("group name cannot be env"))
-	//}
+	if model.Group+model.Key == store.CargoboatConfigVersionKey {
+		ctx.JSON(http.StatusBadRequest, errors.New(fmt.Sprintf("default key %s cannot be added as a key", store.CargoboatConfigVersionKey)))
+	}
 	if err := store.Set(model.Group, model.Key, model.Value); err != nil {
 		ctx.JSON(http.StatusBadRequest, err)
 	}
-
 	ctx.Status(http.StatusOK)
 }
 
@@ -71,6 +70,9 @@ func Delete(ctx *gin.Context) {
 	if key == "" {
 		ctx.JSON(http.StatusBadRequest, errors.New("key cannot be empty"))
 		return
+	}
+	if key == store.CargoboatConfigVersionKey {
+		ctx.JSON(http.StatusBadRequest, errors.New(fmt.Sprintf("default key %s cannot be delete as a key", store.CargoboatConfigVersionKey)))
 	}
 	err := store.Delete(key)
 	if err != nil {
