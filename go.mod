@@ -2,17 +2,19 @@ module github.com/cargoboat/cargoboat
 
 require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
+	github.com/cargoboat/cli v0.0.0-20190224023851-d0c6bf98c5b1 // indirect
+	github.com/cargoboat/client v0.0.0-20190130072840-8c3625c74ef0 // indirect
 	github.com/cargoboat/storage v1.1.1
 	github.com/certifi/gocertifi v0.0.0-20190105021004-abcd57078448 // indirect
 	github.com/evalphobia/logrus_sentry v0.8.0 // indirect
 	github.com/gin-contrib/sse v0.0.0-20190125020943-a7658810eb74 // indirect
 	github.com/gin-gonic/gin v1.3.0
 	github.com/golang/snappy v0.0.0-20190218232222-2a8bb927dd31 // indirect
-	github.com/nilorg/pkg v0.0.0-20190124100809-00a626d01c23
+	github.com/nilorg/pkg v0.0.0-20190130085808-65f58aebd1fa
 	github.com/nilorg/sdk v0.0.0-20190130084846-76476c6b8292
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/sirupsen/logrus v1.3.0 // indirect
-	github.com/spf13/viper v1.2.1
+	github.com/spf13/viper v1.3.1
 	github.com/stretchr/testify v1.3.0 // indirect
 	github.com/syndtr/goleveldb v0.0.0-20190203031304-2f17a3356c66 // indirect
 	github.com/ugorji/go/codec v0.0.0-20190128213124-ee1426cffec0 // indirect

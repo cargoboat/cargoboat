@@ -29,7 +29,7 @@ func Set(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, err)
 	}
 	if model.Group+model.Key == store.CargoboatConfigVersionKey {
-		ctx.JSON(http.StatusBadRequest, errors.New(fmt.Sprintf("default key %s cannot be added as a key", store.CargoboatConfigVersionKey)))
+		ctx.JSON(http.StatusBadRequest, fmt.Errorf("default key %s cannot be added as a key", store.CargoboatConfigVersionKey))
 	}
 	if err := store.Set(model.Group, model.Key, model.Value); err != nil {
 		ctx.JSON(http.StatusBadRequest, err)
@@ -72,7 +72,7 @@ func Delete(ctx *gin.Context) {
 		return
 	}
 	if key == store.CargoboatConfigVersionKey {
-		ctx.JSON(http.StatusBadRequest, errors.New(fmt.Sprintf("default key %s cannot be delete as a key", store.CargoboatConfigVersionKey)))
+		ctx.JSON(http.StatusBadRequest, fmt.Errorf("default key %s cannot be delete as a key", store.CargoboatConfigVersionKey))
 	}
 	err := store.Delete(key)
 	if err != nil {

@@ -22,7 +22,7 @@ func initConfigFile() {
 	}
 	viper.SetConfigFile(configFile)
 	if err := viper.ReadInConfig(); err != nil {
-		log.Fatalf("读取配置文件错误：%s", err.Error())
+		log.Fatalf("读取配置文件错误：%s", err)
 	} else {
 		viper.WatchConfig()
 	}
